@@ -1,16 +1,20 @@
-// src/api.js
+import { useEffect, useState } from "react";
+import { fetchTest } from "./api";
+import "./App.css";
 
-// On récupère l'URL du backend depuis l'environnement
-const API_URL = import.meta.env.VITE_API_URL;
+function App() {
+  const [message, setMessage] = useState("");
 
-// Fonction pour tester la connexion au backend
-export const fetchTest = async () => {
-  try {
-    const res = await fetch(`${API_URL}/api/test`);
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error("Erreur API:", err);
-    return { message: "Erreur de connexion au backend" };
-  }
-};
+  useEffect(() => {
+    fetchTest().then(data => setMessage(data.message || "Backend OK"));
+  }, []);
+
+  return (
+    <div className="App" style={{ textAlign: "center", marginTop: "50px" }}>
+      <h1>🔥 MERN App en Production ! 🔥</h1>
+      <p>Message du backend : {message}</p>
+    </div>
+  );
+}
+
+export default App;
